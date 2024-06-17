@@ -17,7 +17,7 @@
 
 
 - **TTS**
-  - couqui-dfjslkd 파인튜닝 : [가중치 다운로드](https://drive.google.com/file/d/11axqmuhOsRRkD2UpvJIpDlqi1Kfyw7-f/view?usp=sharing)
+  - XXTSv2 파인튜닝 : [가중치 다운로드](https://drive.google.com/file/d/11axqmuhOsRRkD2UpvJIpDlqi1Kfyw7-f/view?usp=sharing)
   
 
 - **Dataset**
