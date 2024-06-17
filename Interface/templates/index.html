@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>제주어-표준어 번역기</title>
+    <!-- Font Awesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            margin: 0;
+        }
+        header {
+            font-size: 32px;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 900px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .section {
+            width: 100%;
+            margin-bottom: 20px;
+            position: relative;
+        }
+        .section textarea {
+            width: 100%;
+            height: 200px;
+            padding: 10px;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            resize: none;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+        .button-container {
+            text-align: center;
+            width: 100%;
+        }
+        .btn {
+            background-color: #fd9f28;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 5px;
+        }
+        .btn:hover {
+            background-color: #e47200;
+        }
+        .language-select {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .language-select select {
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            background-color: #fff;
+            color: #333;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+        }
+        .language-select select:hover {
+            border-color: #a1a1a1;
+        }
+        .switch-button {
+            background-color: #fd9f28;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-left: 10px;
+            padding: 10px 15px;
+        }
+        .switch-button:hover {
+            background-color: #e47200;
+        }
+        .clear-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            color: #999;
+        }
+        .clear-button:hover {
+            color: #666;
+        }
+        .icon-container {
+            display: flex;
+            justify-content: left;
+            align-items: left;
+            padding-top: 10px;
+            margin-top: 10px;
+            border-top: 1px solid #ced4da;
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: calc(100% - 20px);
+            box-sizing: border-box;
+        }
+        .icon-button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            margin: 0 10px;
+            font-size: 20px;
+            color: #555;
+            position: relative; 
+        }
+        .icon-button img {
+            width: 24px;
+            height: 24px;
+        }
+        .icon-button:hover {
+            color: #71706e;
+        }
+        .icon-button .tooltip {
+            display: none;
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #747270;
+            color: #fff;
+            padding: 5px;
+            border-radius: 5px;
+            font-size: 12px;
+            white-space: nowrap;
+            z-index: 1000;
+        }
+        .icon-button:hover .tooltip {
+            display: block;
+        }
+        .message {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            font-size: 12px;
+            display: none;
+            z-index: 1000;
+        }
+        .recording-message {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            font-size: 15px;
+            display: none;
+            z-index: 1000;
+        }
+
+    </style>
+</head>
+<body>
+    <header>제주어-표준어 번역기</header>
+    <p>24-1 자연어처리 최종 프로젝트 (by 우분투😀)</p>
+    <div id="message" class="message"></div>
+    <div id="recording-message" class="recording-message">녹음 중입니다... 〰️</div>
+    <div class="container">
+        <div class="section">
+            <div class="language-select">
+                <select id="source-language" onchange="setupTargetLanguage()">
+                    <option value="jeju">제주어</option>
+                    <option value="standard">표준어</option>
+                </select>
+                <button class="switch-button" onclick="switchLanguages()"><i class="fas fa-exchange-alt"></i></button>
+                <button class="clear-button" onclick="clearText()">✕</button>
+            </div>
+            <div style="position: relative;">
+                <textarea id="source-text" placeholder="번역할 내용을 입력하세요..."></textarea>
+                <div class="icon-container">
+                    <button class="icon-button" onclick="copyText('source-text')">📄
+                        <span class="tooltip">복사하기</span>
+                    </button>
+                    <button class="icon-button" onclick="startVoiceInput('source-text')">🎙️
+                        <span class="tooltip">음성 입력</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="section">
+            <div class="language-select">
+                <select id="target-language" disabled>
+                    <option value="standard">표준어</option>
+                    <option value="jeju">제주어</option>
+                </select>
+            </div>
+            <div style="position: relative;">
+                <textarea id="translated-text" placeholder="번역 결과를 출력합니다" readonly></textarea>
+                <div class="icon-container">
+                    <button class="icon-button" onclick="playTextToSpeech('translated-text')">🔊
+                        <span class="tooltip">발음 듣기</span>
+                    </button>
+                    <button class="icon-button" onclick="copyText('translated-text')">📄
+                        <span class="tooltip">복사하기</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="button-container">
+            <button class="btn" onclick="translateText()">번역하기</button>
+        </div>
+    </div>
+
+    <script>
+        function setupTargetLanguage() {
+            const sourceLanguage = document.getElementById('source-language').value;
+            const targetLanguage = document.getElementById('target-language');
+            
+            if (sourceLanguage === 'standard') {
+                targetLanguage.value = 'jeju';
+            } else if (sourceLanguage === 'jeju') {
+                targetLanguage.value = 'standard';
+            }
+        }
+
+        function translateText() {
+            const text = document.getElementById('source-text').value;
+            const sourceLanguage = document.getElementById('source-language').value;
+            const targetLanguage = document.getElementById('target-language').value;
+
+            fetch('/translate', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ text: text, source_language: sourceLanguage, target_language: targetLanguage }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('translated-text').value = data.translated_text;
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+        }
+
+        function clearText() {
+            document.getElementById('source-text').value = '';
+            document.getElementById('translated-text').value = '';
+        }
+
+        function switchLanguages() {
+            const sourceSelect = document.getElementById('source-language');
+            const targetSelect = document.getElementById('target-language');
+            const sourceText = document.getElementById('source-text').value;
+            const translatedText = document.getElementById('translated-text').value;
+
+            const tempValue = sourceSelect.value;
+            sourceSelect.value = targetSelect.value;
+            targetSelect.value = tempValue;
+
+            document.getElementById('source-text').value = translatedText;
+            document.getElementById('translated-text').value = sourceText;
+
+            setupTargetLanguage();
+        }
+
+        // Initialize target language on page load
+        document.addEventListener('DOMContentLoaded', (event) => {
+            setupTargetLanguage();
+        });
+
+        function playTextToSpeech(elementId) {
+            const text = document.getElementById(elementId).value;
+            fetch('/text-to-speech', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ text: text }),
+            })
+            .then(response => response.blob())
+            .then(blob => {
+                const url = URL.createObjectURL(blob);
+                const audio = new Audio(url);
+                audio.play();
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+
+        function playAudio(filename) {
+            const audio = new Audio(`/static/audio/${filename}`);
+            audio.play();
+        }
+
+        function copyText(elementId) {
+            const text = document.getElementById(elementId).value;
+            navigator.clipboard.writeText(text).then(() => {
+                showMessage('복사되었습니다.');
+            });
+        }
+
+        function showMessage(message) {
+            const messageBox = document.getElementById('message');
+            messageBox.textContent = message;
+            messageBox.style.display = 'block';
+            setTimeout(() => {
+                messageBox.style.display = 'none';
+            }, 3000);
+        }
+
+        function startVoiceInput(elementId) {
+            const recordingMessage = document.getElementById('recording-message');
+            let countdown = 5;
+
+            recordingMessage.textContent = `음성을 입력하세요 〰️ ${countdown} `;
+            recordingMessage.style.display = 'block';
+
+            const countdownInterval = setInterval(() => {
+                countdown--;
+                if (countdown <= 0) {
+                    clearInterval(countdownInterval);
+                    recordingMessage.style.display = 'none';
+                } else {
+                    recordingMessage.textContent = `음성을 입력하세요 〰️ ${countdown} `;
+                }
+            }, 1000);
+
+            fetch('/voice-input', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: 'record_seconds=5'
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById(elementId).value = data.text;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+
+        
+    </script>
+</body>
+</html>
