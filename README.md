@@ -4,7 +4,7 @@
 - 팀 우분투 : 김한영, 서가연, 정아영, 허채연
 
 
-
+<br>
 ### Method 
 ---
 - **STT**
@@ -12,8 +12,9 @@
   
   
 - **Translation**
-  - 제주어 -> 표준어 : Bart-base 모델 사용 [가중치 다운로드] ()
-  - 표준어 -> 제주어 : KoBart2 모델 사용 [가중치 다운로드] ()
+  - 제주어 -> 표준어 : Bart-base 모델 (bartbase_model2) / transformer 모델 사용
+  - 표준어 -> 제주어 : KoBart2(kobart2_sort) 모델 사용 
+  - [가중치 다운로드] (https://drive.google.com/file/d/1M1ZiRUTovKWb9eH2fWtUI1HmsS33h-wr/view?usp=drive_link)
 
 
 - **TTS**
@@ -21,11 +22,12 @@
   
 
 - **Dataset**
+  - 전처리 완료한 데이터셋 : [csv 파일 다운로드] (https://drive.google.com/file/d/1TBeCVemakN-_eqDnvR8F5e3XcAinBlB7/view?usp=drive_link) 
   - 한국어 방언 발화 데이터 : https://www.aihub.or.kr/aihubdata/data/view.do?currMenu=115&topMenu=100&aihubDataSe=data&dataSetSn=121
   - JIT 제주 방언 데이터 : https://github.com/kakaobrain/jejueo
 
 
-
+<br>
 ### 디렉터리 구조
 ---
 원활한 데모 실행을 위해 아래와 같은 디렉터리 구조를 확인해주세요.
@@ -50,6 +52,7 @@
 
 ``` 
 
+<br>
 ### 데모 실행 
 ---
 ```
