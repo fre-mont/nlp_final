@@ -23,8 +23,8 @@
 
 - **Dataset**
   - 전처리 완료한 데이터셋 : [csv 파일 다운로드](https://drive.google.com/file/d/1TBeCVemakN-_eqDnvR8F5e3XcAinBlB7/view?usp=drive_link) 
-  - 한국어 방언 발화 데이터 : https://www.aihub.or.kr/aihubdata/data/view.do?currMenu=115&topMenu=100&aihubDataSe=data&dataSetSn=121
-  - JIT 제주 방언 데이터 : https://github.com/kakaobrain/jejueo
+  - AIHub 한국어 방언 발화 데이터 : https://www.aihub.or.kr/aihubdata/data/view.do?currMenu=115&topMenu=100&aihubDataSe=data&dataSetSn=121
+  - Kaggle Single Speaker Speech Dataset : https://www.kaggle.com/datasets/bryanpark/jejueo-single-speaker-speech-dataset
 
 
 
